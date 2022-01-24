@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    overflow: hidden;
+}
+.board{
+    border-collapse: collapse;
+    width: 360px;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+td {
+    padding: 0;
+    /* height: 8.2vw;
+    width: 8.2vw; */
+    height: 30px;
+    width: 30px;
+    font-size: 16px;
+    outline: 1px solid black;
+    vertical-align: center;
+    text-align: center;
+}
