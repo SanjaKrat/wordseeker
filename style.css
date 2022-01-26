@@ -1,8 +1,18 @@
 body {
+    font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
     width: 100vw;
     overflow: hidden;
+}
+ul {
+    font-size: 1.2em;
+    list-style-type: disc;
+    -webkit-columns: 2;
+    -moz-columns: 2;
+    columns: 2;
+    list-style-position: inside;
+    list-style: none;
 }
 .board{
     border-collapse: collapse;

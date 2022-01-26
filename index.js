@@ -1,5 +1,4 @@
 (function onload() {
-  console.log();
   const gameBoardLetters = [
     ['L', 'R', 'H', 'H', 'G', 'X', 'D', 'E', 'O', 'J', 'B', 'M'],
     ['S', 'I', 'O', 'A', 'J', 'L', 'U', 'P', 'Q', 'F', 'Z', 'Y'],
@@ -15,13 +14,29 @@
     ['O', 'G', 'F', 'D', 'R', 'A', 'G', 'O', 'N', 'Y', 'G', 'B']
   ];
 
+  const words = [
+    'blaster',
+    'dragon',
+    'falcon',
+    'hyperloop',
+    'model3',
+    'openai',
+    'paypal',
+    'pretoria',
+    'solarcity',
+    'spacex',
+    'tesla'
+  ];
+
   const gameBoard = document.querySelector('.board');
 
   gameBoard.addEventListener('touchstart', (evt) => touchStartHandler(evt));
   gameBoard.addEventListener('touchmove', (evt) => touchMoveHandler(evt));
   gameBoard.addEventListener('touchend', (evt) => touchEndHandler(evt));
 
+  generateWordList(words);
   generateGameBoard(gameBoard, gameBoardLetters);
+
   const coordinates = {
     x0: document.querySelector('.board').offsetLeft,
     y0: document.querySelector('.board').offsetTop,
@@ -43,6 +58,7 @@
       return (this.yEnd = coord);
     }
   };
+
   console.log(coordinates.x0);
   console.log(coordinates.y0);
 
@@ -57,6 +73,15 @@
         row.appendChild(cell);
       });
       board.appendChild(row);
+    });
+  }
+
+  function generateWordList(wordlist) {
+    const listElement = document.querySelector('.words');
+    wordlist.forEach((word) => {
+      let li = document.createElement('li');
+      li.innerText = word.toUpperCase();
+      listElement.appendChild(li);
     });
   }
 
