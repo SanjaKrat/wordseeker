@@ -27,6 +27,30 @@ td {
     width: 30px;
     font-size: 16px;
     outline: 1px solid black;
-    vertical-align: center;
+    vertical-align: central;
     text-align: center;
+}
+.guessed {
+    text-decoration: line-through;
+    color: lightgray;
+}
+.congrats {
+    position: fixed;
+    vertical-align: central;
+    margin-top: -250px;
+    width: 200px;
+    height: 75px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    background-color: lightgray;
+    opacity: 1;
+    text-align: center;
+    line-height: 75px;
+}
+.visible {
+    display: block;
+}
+.congrats_container {
+    width: 200px;
+    margin: 0 auto;
 }

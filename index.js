@@ -29,6 +29,8 @@
   ];
 
   const gameBoard = document.querySelector('.board');
+  let wordsLiElements = [];
+  let wordCounter = words.length;
 
   gameBoard.addEventListener('touchstart', (evt) => touchStartHandler(evt));
   gameBoard.addEventListener('touchmove', (evt) => touchMoveHandler(evt));
@@ -37,6 +39,7 @@
   generateWordList(words);
   generateGameBoard(gameBoard, gameBoardLetters);
 
+  const cellsOrRows = 12;
   let currentCellIdx = null;
   let currentRowIdx = null;
   let selectedCells = [];
@@ -64,9 +67,6 @@
     }
   };
 
-  console.log(coordinates.x0);
-  console.log(coordinates.y0);
-
   function generateGameBoard(board, lettersMatrix) {
     lettersMatrix.forEach((rowLetters, idx) => {
       let row = document.createElement('tr');
@@ -86,22 +86,19 @@
     wordlist.forEach((word) => {
       let li = document.createElement('li');
       li.innerText = word.toUpperCase();
+      wordsLiElements.push(li);
       listElement.appendChild(li);
     });
   }
 
   function touchStartHandler(evt) {
-    console.log('start');
     evt.target.style = 'background-color: lightgreen';
     coordinates.setXStart(evt.changedTouches[0].pageX);
     coordinates.setYStart(evt.changedTouches[0].pageY);
-    console.log(`coord xStart ${coordinates.xStart}`);
-    console.log(`coord yStart ${coordinates.yStart}`);
 
     currentCellIdx = Math.floor((coordinates.xStart - coordinates.x0) / 30);
     currentRowIdx = Math.floor((coordinates.yStart - coordinates.y0) / 30);
     selectedCells.push(evt.target);
-    console.log(JSON.stringify(selectedCells));
   }
 
   function touchMoveHandler(evt) {
@@ -124,7 +121,6 @@
           currentCellIdx = Math.floor(
             (evt.changedTouches[0].pageX - coordinates.x0) / 30
           );
-          console.log(`currentCellIdx ${currentCellIdx}`);
           selectedInRow(evt.target.parentNode, currentCellIdx);
         }
 
@@ -138,34 +134,26 @@
           currentRowIdx = Math.floor(
             (evt.changedTouches[0].pageY - coordinates.y0) / 30
           );
-          console.log(`Current row ${currentRowIdx}`);
+
+          selectedRows(currentRowIdx, currentCellIdx);
         }
         break;
     }
   }
 
   function touchEndHandler(evt) {
-    console.log(coordinates.direction);
-    console.log('touch end');
+    evt.preventDefault();
     coordinates.setXEnd(evt.changedTouches[0].pageX);
     coordinates.setYEnd(evt.changedTouches[0].pageY);
-    console.log(coordinates.xEnd);
-    console.log(coordinates.yEnd);
-
-    // switch (coordinates.direction) {
-    //   case 'left':
-    //   case 'right':
-    //     selectedInRow(evt.target.parentNode, currentCellIdx);
-    //     break;
-    //   case 'up':
-    //   case 'down':
-    // }
 
     selectedCells.forEach((cell) => guessWordArray.push(cell.innerText));
-    console.log(guessWordArray.join(''));
+
+    matchWord(words, wordsLiElements, guessWordArray.join('').toLowerCase());
 
     //restore
     coordinates.direction = null;
+    selectedCells = [];
+    guessWordArray = [];
   }
 
   function direction(xStart, yStart, xEnd, yEnd) {
@@ -177,28 +165,50 @@
 
     if (moduleX > moduleY) {
       if (dX > 0) {
-        console.log('right');
         return 'right';
       } else {
-        console.log('left');
         return 'left';
       }
     } else {
       if (dY > 0) {
-        console.log('down');
         return 'down';
       } else {
-        console.log('up');
         return 'up';
       }
     }
   }
 
-  function selectedRows(gameBoardLetters) {}
+  function selectedRows(currentRowIdx, cell) {
+    if (currentRowIdx >= 0 && currentRowIdx < cellsOrRows) {
+      let rows = gameBoard.children;
+      let row = rows[currentRowIdx];
+      selectedCells.push(row.children[cell]);
+      row.children[cell].style = 'background-color: lightgreen';
+    }
+  }
 
   function selectedInRow(row, currentCellIdx) {
-    selectedCells.push(row.children[currentCellIdx]);
-    row.children[currentCellIdx].style = 'background-color: lightgreen';
-    console.log();
+    if (currentCellIdx < cellsOrRows && currentCellIdx >= 0) {
+      selectedCells.push(row.children[currentCellIdx]);
+      row.children[currentCellIdx].style = 'background-color: lightgreen';
+    }
+  }
+
+  function matchWord(words, wordsLiElements, guessWord) {
+    let idx = words.indexOf(guessWord);
+    if (idx >= 0) {
+      wordsLiElements[idx].classList.add('guessed');
+      wordCounter--;
+      if (wordCounter == 0) {
+        showCongrats();
+      }
+    } else {
+      selectedCells.forEach((cell) => (cell.style = 'background-color: white'));
+    }
+  }
+  function showCongrats() {
+    let congrats = document.querySelector('.congrats');
+    congrats.hidden = false;
+    setTimeout(() => (congrats.hidden = 'true'), 1000);
   }
 })();
