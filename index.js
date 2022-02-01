@@ -30,6 +30,7 @@
   const gameBoard = document.querySelector('.board');
   let wordsLiElements = [];
   let wordCounter = words.length;
+  let guessedWords = [];
 
   gameBoard.addEventListener('touchstart', (evt) => touchStartHandler(evt));
   gameBoard.addEventListener('touchmove', (evt) => touchMoveHandler(evt), {
@@ -207,8 +208,11 @@
     let idx = words.indexOf(guessWord);
     if (idx >= 0) {
       wordsLiElements[idx].classList.add('guessed');
-      wordCounter--;
-      if (wordCounter == 0) {
+      if (guessedWords.indexOf(guessWord) < 0) {
+        guessedWords.push(guessWord);
+        wordCounter--;
+      }
+      if (wordCounter === 0) {
         showCongrats();
       }
     } else {
