@@ -33,7 +33,9 @@
   let wordCounter = words.length;
 
   gameBoard.addEventListener('touchstart', (evt) => touchStartHandler(evt));
-  gameBoard.addEventListener('touchmove', (evt) => touchMoveHandler(evt));
+  gameBoard.addEventListener('touchmove', (evt) => touchMoveHandler(evt), {
+    passive: false
+  });
   gameBoard.addEventListener('touchend', (evt) => touchEndHandler(evt));
 
   generateWordList(words);
@@ -102,6 +104,7 @@
   }
 
   function touchMoveHandler(evt) {
+    evt.preventDefault();
     if (coordinates.direction === null) {
       coordinates.direction = direction(
         coordinates.xStart,
