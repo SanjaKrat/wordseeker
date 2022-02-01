@@ -1,17 +1,16 @@
 (function onload() {
   const gameBoardLetters = [
-    ['L', 'R', 'H', 'H', 'G', 'X', 'D', 'E', 'O', 'J', 'B', 'M'],
-    ['S', 'I', 'O', 'A', 'J', 'L', 'U', 'P', 'Q', 'F', 'Z', 'Y'],
-    ['N', 'L', 'P', 'I', 'R', 'P', 'B', 'A', 'Q', 'A', 'L', 'T'],
-    ['U', 'T', 'E', 'R', 'M', 'O', 'L', 'Y', 'Q', 'L', 'T', 'I'],
-    ['T', 'C', 'N', 'O', 'O', 'O', 'A', 'P', 'O', 'C', 'C', 'C'],
-    ['Y', 'B', 'A', 'T', 'D', 'L', 'S', 'A', 'X', 'O', 'B', 'R'],
-    ['P', 'T', 'I', 'E', 'E', 'R', 'T', 'L', 'X', 'N', 'B', 'A'],
-    ['C', 'E', 'Y', 'R', 'L', 'E', 'E', 'O', 'L', 'S', 'U', 'L'],
-    ['R', 'S', 'N', 'P', '3', 'P', 'R', 'O', 'H', 'F', 'B', 'O'],
-    ['P', 'L', 'Y', 'N', 'O', 'Y', 'N', 'K', 'J', 'O', 'B', 'S'],
-    ['P', 'A', 'C', 'Z', 'W', 'H', 'S', 'P', 'A', 'C', 'E', 'X'],
-    ['O', 'G', 'F', 'D', 'R', 'A', 'G', 'O', 'N', 'Y', 'G', 'B']
+    ['I', 'O', 'A', 'J', 'L', 'U', 'P', 'Q', 'F', 'Z', 'Y'],
+    ['L', 'P', 'I', 'R', 'P', 'B', 'A', 'Q', 'A', 'L', 'T'],
+    ['T', 'E', 'R', 'M', 'O', 'L', 'Y', 'Q', 'L', 'T', 'I'],
+    ['C', 'N', 'O', 'O', 'O', 'A', 'P', 'O', 'C', 'C', 'C'],
+    ['B', 'A', 'T', 'D', 'L', 'S', 'A', 'X', 'O', 'B', 'R'],
+    ['T', 'I', 'E', 'E', 'R', 'T', 'L', 'X', 'N', 'B', 'A'],
+    ['E', 'Y', 'R', 'L', 'E', 'E', 'O', 'L', 'S', 'U', 'L'],
+    ['S', 'N', 'P', '3', 'P', 'R', 'O', 'H', 'F', 'B', 'O'],
+    ['L', 'Y', 'N', 'O', 'Y', 'N', 'K', 'J', 'O', 'B', 'S'],
+    ['A', 'C', 'Z', 'W', 'H', 'S', 'P', 'A', 'C', 'E', 'X'],
+    ['G', 'F', 'D', 'R', 'A', 'G', 'O', 'N', 'Y', 'G', 'B']
   ];
 
   const words = [
@@ -41,7 +40,8 @@
   generateWordList(words);
   generateGameBoard(gameBoard, gameBoardLetters);
 
-  const cellsOrRows = 12;
+  const cellsOrRows = gameBoardLetters.length;
+  const cellWidth = 33;
   let currentCellIdx = null;
   let currentRowIdx = null;
   let selectedCells = [];
@@ -98,8 +98,12 @@
     coordinates.setXStart(evt.changedTouches[0].pageX);
     coordinates.setYStart(evt.changedTouches[0].pageY);
 
-    currentCellIdx = Math.floor((coordinates.xStart - coordinates.x0) / 30);
-    currentRowIdx = Math.floor((coordinates.yStart - coordinates.y0) / 30);
+    currentCellIdx = Math.floor(
+      (coordinates.xStart - coordinates.x0) / cellWidth
+    );
+    currentRowIdx = Math.floor(
+      (coordinates.yStart - coordinates.y0) / cellWidth
+    );
     selectedCells.push(evt.target);
   }
 
@@ -118,11 +122,12 @@
       case 'right':
       case 'left':
         if (
-          Math.floor((evt.changedTouches[0].pageX - coordinates.x0) / 30) !=
-          currentCellIdx
+          Math.floor(
+            (evt.changedTouches[0].pageX - coordinates.x0) / cellWidth
+          ) != currentCellIdx
         ) {
           currentCellIdx = Math.floor(
-            (evt.changedTouches[0].pageX - coordinates.x0) / 30
+            (evt.changedTouches[0].pageX - coordinates.x0) / cellWidth
           );
           selectedInRow(evt.target.parentNode, currentCellIdx);
         }
@@ -131,11 +136,12 @@
       case 'up':
       case 'down':
         if (
-          Math.floor((evt.changedTouches[0].pageY - coordinates.y0) / 30) !==
-          currentRowIdx
+          Math.floor(
+            (evt.changedTouches[0].pageY - coordinates.y0) / cellWidth
+          ) !== currentRowIdx
         ) {
           currentRowIdx = Math.floor(
-            (evt.changedTouches[0].pageY - coordinates.y0) / 30
+            (evt.changedTouches[0].pageY - coordinates.y0) / cellWidth
           );
 
           selectedRows(currentRowIdx, currentCellIdx);
