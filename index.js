@@ -220,6 +220,8 @@ function onload(evt) {
       if (guessedWords.indexOf(guessWord) < 0) {
         guessedWords.push(guessWord);
         wordCounter--;
+        let audio = new Audio('./sounds/pop.wav');
+        audio.addEventListener('canplaythrough', (evt) => audio.play());
       }
       if (wordCounter === 0) {
         showCongrats();
@@ -233,6 +235,6 @@ function onload(evt) {
   function showCongrats() {
     let congrats = document.querySelector('.congrats');
     congrats.hidden = false;
-    setTimeout(() => (congrats.hidden = 'true'), 1000);
+    setTimeout(() => (congrats.hidden = 'true'), 6000);
   }
 }
