@@ -1,4 +1,6 @@
-(function onload() {
+document.addEventListener('DOMContentLoaded', (evt) => onload(evt));
+
+function onload(evt) {
   const gameBoardLetters = [
     ['I', 'O', 'A', 'J', 'L', 'U', 'P', 'Q', 'F', 'Z', 'Y'],
     ['L', 'P', 'I', 'R', 'P', 'B', 'A', 'Q', 'A', 'L', 'T'],
@@ -32,17 +34,21 @@
   let wordCounter = words.length;
   let guessedWords = [];
 
-  gameBoard.addEventListener('touchstart', (evt) => touchStartHandler(evt));
+  gameBoard.addEventListener('touchstart', (evt) => touchStartHandler(evt), {
+    passive: false
+  });
   gameBoard.addEventListener('touchmove', (evt) => touchMoveHandler(evt), {
     passive: false
   });
-  gameBoard.addEventListener('touchend', (evt) => touchEndHandler(evt));
+  gameBoard.addEventListener('touchend', (evt) => touchEndHandler(evt), {
+    passive: false
+  });
 
   generateWordList(words);
   generateGameBoard(gameBoard, gameBoardLetters);
 
   const cellsOrRows = gameBoardLetters.length;
-  const cellWidth = 33;
+  const cellWidth = 32;
   let currentCellIdx = null;
   let currentRowIdx = null;
   let selectedCells = [];
@@ -95,6 +101,7 @@
   }
 
   function touchStartHandler(evt) {
+    evt.preventDefault();
     evt.target.style = 'background-color: lightgreen';
     coordinates.setXStart(evt.changedTouches[0].pageX);
     coordinates.setYStart(evt.changedTouches[0].pageY);
@@ -224,4 +231,4 @@
     congrats.hidden = false;
     setTimeout(() => (congrats.hidden = 'true'), 1000);
   }
-})();
+}
