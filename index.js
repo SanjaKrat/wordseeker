@@ -25,13 +25,14 @@ function onload(evt) {
     'paypal',
     'pretoria',
     'solarcity',
+    'stanford',
     'spacex',
     'tesla'
   ];
 
   const gameBoard = document.querySelector('.board');
   let wordsLiElements = [];
-  let wordCounter = words.length;
+  let wordCounter = words.length - 1;
   let guessedWords = [];
 
   gameBoard.addEventListener('touchstart', (evt) => touchStartHandler(evt), {
@@ -102,7 +103,7 @@ function onload(evt) {
 
   function touchStartHandler(evt) {
     evt.preventDefault();
-    evt.target.style = 'background-color: lightgreen';
+    evt.target.style = 'background-color: #0032F3; color: white';
     coordinates.setXStart(evt.changedTouches[0].pageX);
     coordinates.setYStart(evt.changedTouches[0].pageY);
 
@@ -200,14 +201,15 @@ function onload(evt) {
       let rows = gameBoard.children;
       let row = rows[currentRowIdx];
       selectedCells.push(row.children[cell]);
-      row.children[cell].style = 'background-color: lightgreen';
+      row.children[cell].style = 'background-color: #0032F3; color: white';
     }
   }
 
   function selectedInRow(row, currentCellIdx) {
     if (currentCellIdx < cellsOrRows && currentCellIdx >= 0) {
       selectedCells.push(row.children[currentCellIdx]);
-      row.children[currentCellIdx].style = 'background-color: lightgreen';
+      row.children[currentCellIdx].style =
+        'background-color: #0032F3; color: white';
     }
   }
 
@@ -223,7 +225,9 @@ function onload(evt) {
         showCongrats();
       }
     } else {
-      selectedCells.forEach((cell) => (cell.style = 'background-color: white'));
+      selectedCells.forEach(
+        (cell) => (cell.style = 'background-color: white; color: black')
+      );
     }
   }
   function showCongrats() {
